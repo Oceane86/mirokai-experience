@@ -1,4 +1,4 @@
-# Media Assets (Audio + Video)
+# Médias (Audio + Vidéo)
 
 Déposez vos médias de production ici.
 
