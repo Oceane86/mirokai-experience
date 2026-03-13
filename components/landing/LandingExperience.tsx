@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { useProfile } from "@/hooks/useProfile";
-import { trackEvent, trackPageView } from "@/lib/analytics";
+import { trackPageView } from "@/lib/analytics";
 import type { VisitorProfile } from "@/types/profile";
 
 import { ArcadeSection } from "./ArcadeSection";
@@ -49,12 +49,8 @@ export function LandingExperience() {
 
     const getTabFromHash = () => {
       const hash = window.location.hash;
-      if (hash === "#contacts") {
-        return "contacts" as const;
-      }
-      if (hash === "#game") {
-        return "game" as const;
-      }
+      if (hash === "#contacts") return "contacts" as const;
+      if (hash === "#game") return "game" as const;
       return "home" as const;
     };
 
@@ -84,11 +80,6 @@ export function LandingExperience() {
     }
   }, [hydrated, profile, setProfile]);
 
-  const handleProfileChange = (nextProfile: VisitorProfile) => {
-    setProfile(nextProfile);
-    trackEvent("profile_selected", { profile: nextProfile });
-  };
-
   const scrollToContacts = () => {
     if (isMobile) {
       setActiveMobileTab("contacts");
@@ -108,20 +99,17 @@ export function LandingExperience() {
     <main className="pb-14">
       <ConfirmationBanner />
       <div className={showHome ? undefined : "hidden"}>
-          <Hero
-            profile={hydrated ? resolvedProfile : "team"}
-            deployedRobots={DEPLOYED_ROBOTS}
-            onPrimaryCTA={scrollToContacts}
-          />
-
-          <CapabilitiesCarousel />
-
-          <UseCases />
-
-          <Testimonials />
-          <FAQ />
-          <LocationSection />
-          <ExitPopup profile={hydrated ? resolvedProfile : "team"} />
+        <Hero
+          profile={hydrated ? resolvedProfile : "team"}
+          deployedRobots={DEPLOYED_ROBOTS}
+          onPrimaryCTA={scrollToContacts}
+        />
+        <CapabilitiesCarousel />
+        <UseCases />
+        <Testimonials />
+        <FAQ />
+        <LocationSection />
+        <ExitPopup profile={hydrated ? resolvedProfile : "team"} />
       </div>
 
       <div className={showContacts ? undefined : "hidden"}>
@@ -131,7 +119,7 @@ export function LandingExperience() {
       </div>
 
       <section id="game" className={showGame ? undefined : "hidden"}>
-          <ArcadeSection />
+        <ArcadeSection />
       </section>
     </main>
   );
