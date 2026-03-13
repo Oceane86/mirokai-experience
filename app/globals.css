@@ -1,0 +1,214 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #1f2030;
+  --foreground: #f4f0e6;
+  --surface: #2a2b3d;
+  --surface-2: #343652;
+  --accent: #004aad;
+  --accent-2: #f09803;
+  --accent-3: #0eaa92;
+  --accent-4: #a3337c;
+  --accent-5: #9e63a5;
+  --border-soft: rgba(244, 240, 230, 0.22);
+  --glass-bg: rgba(35, 37, 56, 0.78);
+  --glass-border: rgba(165, 110, 177, 0.34);
+  --bg-mesh:
+    radial-gradient(72% 58% at 13% 15%, rgba(0, 74, 173, 0.28), transparent 64%),
+    radial-gradient(72% 58% at 88% 20%, rgba(163, 51, 124, 0.26), transparent 64%),
+    radial-gradient(85% 62% at 42% 88%, rgba(14, 170, 146, 0.18), transparent 70%),
+    linear-gradient(rgba(0, 0, 0, 0.60), rgba(0, 0, 0, 0.60)),
+    url('/media/image_fond.svg');
+}
+
+html[data-theme="nimira-dark"] {
+  --background: #1f2030;
+  --foreground: #f4f0e6;
+  --surface: #2a2b3d;
+  --surface-2: #343652;
+  --accent: #004aad;
+  --accent-2: #f09803;
+  --accent-3: #0eaa92;
+  --accent-4: #a3337c;
+  --accent-5: #9e63a5;
+  --border-soft: rgba(244, 240, 230, 0.22);
+  --glass-bg: rgba(35, 37, 56, 0.78);
+  --glass-border: rgba(165, 110, 177, 0.34);
+  --bg-mesh:
+    radial-gradient(72% 58% at 13% 15%, rgba(0, 74, 173, 0.28), transparent 64%),
+    radial-gradient(72% 58% at 88% 20%, rgba(163, 51, 124, 0.26), transparent 64%),
+    radial-gradient(85% 62% at 42% 88%, rgba(14, 170, 146, 0.18), transparent 70%),
+    linear-gradient(rgba(0, 0, 0, 0.60), rgba(0, 0, 0, 0.60)),
+    url('/media/image_fond.svg');
+}
+
+html[data-theme="nimira-light"] {
+  --background: #eeeadf;
+  --foreground: #202020;
+  --surface: #f7f2ea;
+  --surface-2: #efe7da;
+  --accent: #004aad;
+  --accent-2: #f09803;
+  --accent-3: #0eaa92;
+  --accent-4: #a3337c;
+  --accent-5: #9e63a5;
+  --border-soft: rgba(39, 33, 46, 0.2);
+  --glass-bg: rgba(249, 244, 236, 0.9);
+  --glass-border: rgba(163, 51, 124, 0.2);
+  --bg-mesh:
+    radial-gradient(70% 55% at 12% 18%, rgba(95, 141, 198, 0.18), transparent 68%),
+    radial-gradient(76% 58% at 90% 16%, rgba(203, 145, 182, 0.16), transparent 68%),
+    radial-gradient(86% 62% at 52% 90%, rgba(14, 170, 146, 0.1), transparent 72%),
+    linear-gradient(rgba(238, 234, 223, 0.55), rgba(238, 234, 223, 0.55)),
+    url('/media/image_fond.svg');
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-space-grotesk), sans-serif;
+  min-height: 100vh;
+  background-image: var(--bg-mesh);
+  background-size: auto, auto, auto, cover, cover;
+  background-position: 0 0, 0 0, 0 0, center top, center top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  transition: background-color 0.35s ease, color 0.35s ease, background-image 0.35s ease;
+}
+
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 5.25rem;
+  }
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image:
+    radial-gradient(circle at 12% 20%, rgba(32, 32, 32, 0.2) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 72% 82%, rgba(32, 32, 32, 0.15) 0.8px, transparent 0.8px);
+  background-size: 3px 3px, 4px 4px;
+  z-index: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-space-grotesk), sans-serif;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--foreground) 30%, transparent) transparent;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nimira-float {
+    animation: nimira-float 4.8s ease-in-out infinite;
+  }
+
+  .nimira-pulse {
+    animation: nimira-pulse 2.4s ease-in-out infinite;
+  }
+}
+
+@keyframes nimira-float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes nimira-pulse {
+  0%,
+  100% {
+    opacity: 0.58;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(14px);
+    box-shadow:
+      0 12px 28px rgba(18, 16, 33, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .section-wrap {
+    @apply relative z-20 mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-shell {
+    @apply rounded-3xl border p-5 sm:p-6;
+    border-color: var(--border-soft);
+    background: color-mix(in srgb, var(--surface) 72%, transparent);
+    box-shadow: 0 12px 24px rgba(14, 10, 22, 0.16);
+  }
+
+  .cta-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition;
+    color: #f8f5eb;
+    background: linear-gradient(95deg, #9810FA 0%, #155DFC 100%);
+    box-shadow: 0 8px 18px rgba(152, 16, 250, 0.32);
+  }
+
+  .cta-primary:hover {
+    transform: translateY(-1px);
+    filter: saturate(1.08);
+  }
+
+  .cta-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition;
+    border-color: color-mix(in srgb, var(--foreground) 22%, transparent);
+    color: var(--foreground);
+    background: color-mix(in srgb, var(--surface-2) 62%, transparent);
+  }
+
+  .cta-secondary:hover {
+    transform: translateY(-1px);
+    background: color-mix(in srgb, var(--surface-2) 76%, transparent);
+  }
+}
+
+html[data-theme="nimira-light"] .text-white\/85,
+html[data-theme="nimira-light"] .text-white\/80,
+html[data-theme="nimira-light"] .text-white\/75,
+html[data-theme="nimira-light"] .text-white\/70,
+html[data-theme="nimira-light"] .text-white\/65,
+html[data-theme="nimira-light"] .text-white\/60 {
+  color: rgba(32, 32, 32, 0.82) !important;
+}
+
+html[data-theme="nimira-light"] .border-white\/25,
+html[data-theme="nimira-light"] .border-white\/20,
+html[data-theme="nimira-light"] .border-white\/15,
+html[data-theme="nimira-light"] .border-white\/10 {
+  border-color: rgba(32, 32, 32, 0.2) !important;
+}
+
+html[data-theme="nimira-light"] .bg-white\/10,
+html[data-theme="nimira-light"] .bg-white\/5 {
+  background-color: rgba(255, 248, 238, 0.72) !important;
+}

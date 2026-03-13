@@ -1,0 +1,29 @@
+{
+  "name": "Mirokai",
+  "short_name": "Mirokai",
+  "description": "PWA immersive de visite Enchanted Tools × Nimira.",
+  "start_url": "/experience",
+  "display": "standalone",
+  "background_color": "#050510",
+  "theme_color": "#7B2FFF",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "/icons/icon0.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon1.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/apple-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

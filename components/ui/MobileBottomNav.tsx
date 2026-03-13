@@ -1,0 +1,166 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Gamepad2, House, Mail, UserRound, type LucideIcon } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
+import { useAppPreferences } from "@/components/providers/AppPreferencesProvider";
+
+type NavItem = {
+  key: "home" | "contacts" | "game" | "profile";
+  href: string;
+  icon: LucideIcon;
+};
+
+const navItems: NavItem[] = [
+  { key: "home", href: "/", icon: House },
+  { key: "contacts", href: "/#contacts", icon: Mail },
+  { key: "game", href: "/#game", icon: Gamepad2 },
+  { key: "profile", href: "/profile", icon: UserRound },
+];
+const MOBILE_TAB_EVENT = "mirokai-mobile-tab-change";
+
+const labels = {
+  fr: {
+    home: "Accueil",
+    contacts: "Contacts",
+    game: "Jeu",
+    profile: "Profil",
+    nav: "Navigation mobile",
+  },
+  en: {
+    home: "Home",
+    contacts: "Contact",
+    game: "Game",
+    profile: "Profile",
+    nav: "Mobile navigation",
+  },
+} as const;
+
+export function MobileBottomNav() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [hash, setHash] = useState("");
+  const [activeTab, setActiveTab] = useState<NavItem["key"]>("home");
+  const { locale, theme } = useAppPreferences();
+  const t = labels[locale];
+  const isLight = theme === "nimira-light";
+
+  useEffect(() => {
+    const syncHash = () => {
+      setHash(window.location.hash || "");
+    };
+
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+    return () => window.removeEventListener("hashchange", syncHash);
+  }, []);
+
+  useEffect(() => {
+    if (pathname === "/game" || pathname.startsWith("/game/")) {
+      setActiveTab("game");
+      return;
+    }
+
+    if (pathname === "/profile" || pathname.startsWith("/profile/")) {
+      setActiveTab("profile");
+      return;
+    }
+
+    if (pathname !== "/") {
+      setActiveTab("home");
+      return;
+    }
+
+    if (hash === "#contacts") {
+      setActiveTab("contacts");
+      return;
+    }
+    if (hash === "#game") {
+      setActiveTab("game");
+      return;
+    }
+    setActiveTab("home");
+  }, [pathname, hash]);
+
+  const handleTabClick = (item: NavItem) => {
+    if (item.key === "profile") {
+      return;
+    }
+
+    const nextHash = item.key === "home" ? "" : `#${item.key}`;
+    setActiveTab(item.key);
+    setHash(nextHash);
+
+    if (pathname !== "/") {
+      router.push(item.href);
+      return;
+    }
+
+    const nextUrl = `${window.location.pathname}${nextHash}`;
+    window.history.replaceState(null, "", nextUrl);
+    window.dispatchEvent(new CustomEvent(MOBILE_TAB_EVENT, { detail: { tab: item.key } }));
+  };
+
+  const isItemActive = (item: NavItem) => {
+    if (item.key === "profile") {
+      return pathname === "/profile" || pathname.startsWith("/profile/");
+    }
+    return activeTab === item.key;
+  };
+
+  return (
+    <nav
+      className={`fixed inset-x-0 bottom-0 z-[65] border-t backdrop-blur-xl md:hidden ${
+        isLight ? "border-[#202020]/12 bg-[#fff8ef]/85" : "border-[#f0eef8]/15 bg-[#101528]/35"
+      }`}
+      aria-label={t.nav}
+    >
+      <div className="mx-auto max-w-3xl px-3 pt-2 [padding-bottom:calc(0.5rem+env(safe-area-inset-bottom))]">
+        <ul
+          className={`grid grid-cols-4 gap-1 rounded-2xl border p-1.5 ${
+            isLight ? "border-[#202020]/12 bg-white/95" : "border-[#f0eef8]/15 bg-[#1f2030]/88"
+          }`}
+        >
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const active = isItemActive(item);
+
+            return (
+              <li key={item.key}>
+                <motion.div whileTap={{ scale: 0.96 }}>
+                  {item.key === "profile" ? (
+                    <Link
+                      href={item.href}
+                      className={`flex flex-col items-center gap-1 rounded-xl px-2 py-2 text-[11px] transition ${
+                        active ? "text-white" : isLight ? "text-[#202020]/72 hover:bg-[#202020]/10" : "text-[#f0eef8]/72 hover:bg-[#f0eef8]/10"
+                      }`}
+                      style={active ? { background: "linear-gradient(135deg, rgba(152,16,250,0.30) 0%, rgba(21,93,252,0.30) 100%)", border: "1px solid rgba(152,16,250,0.40)" } : undefined}
+                    >
+                      <Icon size={16} />
+                      <span>{t[item.key]}</span>
+                    </Link>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => handleTabClick(item)}
+                      className={`flex w-full flex-col items-center gap-1 rounded-xl px-2 py-2 text-[11px] transition ${
+                        active ? "text-white" : isLight ? "text-[#202020]/72 hover:bg-[#202020]/10" : "text-[#f0eef8]/72 hover:bg-[#f0eef8]/10"
+                      }`}
+                      style={active ? { background: "linear-gradient(135deg, rgba(152,16,250,0.30) 0%, rgba(21,93,252,0.30) 100%)", border: "1px solid rgba(152,16,250,0.40)" } : undefined}
+                    >
+                      <Icon size={16} />
+                      <span>{t[item.key]}</span>
+                    </button>
+                  )}
+                </motion.div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </nav>
+  );
+}
