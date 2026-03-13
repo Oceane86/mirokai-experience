@@ -9,7 +9,7 @@
 ## 1) Cloner le projet
 
 ```bash
-git clone https://github.com/Oceane86/mirokai-exp.git
+git clone https://github.com/Oceane86/mirokai-experience.git
 cd MirokaiXP-main
 ```
 
