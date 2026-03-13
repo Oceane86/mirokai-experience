@@ -6,6 +6,7 @@
 2. Utiliser la section **Connexion admin**.
 3. Saisir `DASHBOARD_PASSWORD`.
 4. Un cookie HTTP-only permet l'acces aux pages protegees (`/admin`, `/dashboard`).
+5. Mot de passe actuel par défaut : mirokai-dashboard-2026
 
 Raccourcis ensuite disponibles:
 
